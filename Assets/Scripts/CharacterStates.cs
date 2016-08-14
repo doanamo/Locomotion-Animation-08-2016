@@ -62,9 +62,9 @@ public class MovingState : State
     {
         if(direction != Vector3.zero)
         {
-            Rigidbody rigidbody = character.rigidbody;
-            rigidbody.AddForce(direction, ForceMode.VelocityChange);
-            rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, 4.0f);
+            //Rigidbody rigidbody = character.rigidbody;
+            //rigidbody.AddForce(direction, ForceMode.VelocityChange);
+            //rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, 4.0f);
 
             direction = Vector3.zero;
         }

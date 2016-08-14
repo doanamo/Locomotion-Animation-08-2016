@@ -158,8 +158,19 @@ ModelImporter:
       might lower retargeting quality:\nNote: Activate translation DOF on avatar to
       improve retargeting quality.\n\t'mixamorig:Spine2' is inbetween humanoid transforms
       and has rotation animation that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tRightLowerLeg
+      average position error 0.2 mm and maximum position error 2.3 mm at time 0: 3
+      (13.6%) Frame 3\n\tLeftUpperArm average position error 3.8 mm and maximum position
+      error 5.5 mm at time 0:13 (59.1%) Frame 13\n\tLeftLowerArm average position
+      error 3.1 mm and maximum position error 5.1 mm at time 0:12 (54.5%) Frame 12\n\tLeftHand
+      average position error 2.9 mm and maximum position error 5.3 mm at time 0:12
+      (54.5%) Frame 12\n\tRightUpperArm average position error 3.8 mm and maximum
+      position error 5.8 mm at time 0: 3 (13.6%) Frame 3\n\tRightLowerArm average
+      position error 3.0 mm and maximum position error 5.7 mm at time 0: 1 (4.5%)
+      Frame 1\n\tRightHand average position error 2.7 mm and maximum position error
+      5.4 mm at time 0: 1 (4.5%) Frame 1\n\tHead average position error 4.1 mm and
+      maximum position error 6.2 mm at time 0: 9 (40.9%) Frame 9\n"
+    animationDoRetargetingWarnings: 1
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -173,7 +184,7 @@ ModelImporter:
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
-      orientationOffsetY: -4.9
+      orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
@@ -183,9 +194,9 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
