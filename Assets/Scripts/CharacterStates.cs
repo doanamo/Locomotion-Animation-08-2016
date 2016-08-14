@@ -12,7 +12,6 @@ public class IdleState : State
 
     public override bool OnEnter(State previousState)
     {
-        Debug.Log("OnEnter: Idle State");
         return true;
     }
 
@@ -22,6 +21,7 @@ public class IdleState : State
         {
             MoveCommand moveCommand = (MoveCommand)(object)command;
             MovingState movingState = new MovingState(character, moveCommand);
+
             if(character.stateMachine.ChangeState(movingState))
                 return;
         }
@@ -29,6 +29,9 @@ public class IdleState : State
 
     public override void OnUpdate()
     {
+        float verticalSpeed = character.animator.GetFloat("Vertical Speed");
+        verticalSpeed = Mathf.MoveTowards(verticalSpeed, 0.0f, Time.fixedDeltaTime);
+        character.animator.SetFloat("Vertical Speed", verticalSpeed);
     }
 }
 
@@ -45,7 +48,6 @@ public class MovingState : State
 
     public override bool OnEnter(State previousState)
     {
-        Debug.Log("OnEnter: Moving State");
         return true;
     }
 
@@ -62,15 +64,22 @@ public class MovingState : State
     {
         if(direction != Vector3.zero)
         {
-            //Rigidbody rigidbody = character.rigidbody;
-            //rigidbody.AddForce(direction, ForceMode.VelocityChange);
-            //rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, 4.0f);
+            // Set animation speed.
+            float verticalSpeed = character.animator.GetFloat("Vertical Speed");
+            verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, Time.fixedDeltaTime);
+            character.animator.SetFloat("Vertical Speed", verticalSpeed);
 
+            // Rotate facing direction.
+            Transform transform = character.gameObject.transform;
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+
+            // Reset direction value.
             direction = Vector3.zero;
         }
         else
         {
             IdleState idleState = new IdleState(character);
+
             if(character.stateMachine.ChangeState(idleState))
                 return;
         }

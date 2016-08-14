@@ -26,17 +26,6 @@ public class CharacterLogic : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.W))
-        {
-            speed += 1.0f * Time.fixedDeltaTime;
-        }
-        else
-        {
-            speed -= 1.0f * Time.fixedDeltaTime;
-        }
-
-        speed = Mathf.Clamp(speed, 0.0f, 1.0f);
-        animator.SetFloat("Vertical Speed", speed);
     }
 
     void FixedUpdate()

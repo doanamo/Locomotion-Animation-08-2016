@@ -609,6 +609,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 453966}
   - 137: {fileID: 13796506}
+  - 114: {fileID: 11491000}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -734,6 +735,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 401734}
   - 137: {fileID: 13754314}
+  - 114: {fileID: 11418368}
   m_Layer: 0
   m_Name: Joints
   m_TagString: Untagged
@@ -1919,10 +1921,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157814}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 422486}
   - {fileID: 441158}
@@ -2109,7 +2111,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!95 &9537286
 Animator:
@@ -2128,6 +2130,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11418368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc21c48ee370cb42a042622dd21640d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useSkinnedMesh: 1
 --- !u!114 &11477202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2140,6 +2154,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
+  animator: {fileID: 0}
+--- !u!114 &11491000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc21c48ee370cb42a042622dd21640d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useSkinnedMesh: 1
 --- !u!136 &13697172
 CapsuleCollider:
   m_ObjectHideFlags: 1
