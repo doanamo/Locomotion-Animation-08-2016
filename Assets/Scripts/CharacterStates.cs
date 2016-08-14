@@ -4,6 +4,7 @@ using System.Collections;
 public class IdleState : State
 {
     private CharacterLogic character;
+    private float lingerTimer;
 
     public IdleState(CharacterLogic character)
     {
@@ -12,6 +13,8 @@ public class IdleState : State
 
     public override bool OnEnter(State previousState)
     {
+        lingerTimer = 0.0f;
+
         return true;
     }
 
@@ -29,9 +32,17 @@ public class IdleState : State
 
     public override void OnUpdate()
     {
-        float verticalSpeed = character.animator.GetFloat("Vertical Speed");
+        float verticalSpeed = character.animator.GetFloat("Movement");
         verticalSpeed = Mathf.MoveTowards(verticalSpeed, 0.0f, Time.fixedDeltaTime);
-        character.animator.SetFloat("Vertical Speed", verticalSpeed);
+        character.animator.SetFloat("Movement", verticalSpeed);
+
+        lingerTimer += Time.fixedDeltaTime;
+
+        if(lingerTimer > 8.0f)
+        {
+            character.animator.SetTrigger("Linger");
+            lingerTimer = 0.0f;
+        }
     }
 }
 
@@ -65,9 +76,9 @@ public class MovingState : State
         if(direction != Vector3.zero)
         {
             // Set animation speed.
-            float verticalSpeed = character.animator.GetFloat("Vertical Speed");
+            float verticalSpeed = character.animator.GetFloat("Movement");
             verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, Time.fixedDeltaTime);
-            character.animator.SetFloat("Vertical Speed", verticalSpeed);
+            character.animator.SetFloat("Movement", verticalSpeed);
 
             // Rotate facing direction.
             Transform transform = character.gameObject.transform;
