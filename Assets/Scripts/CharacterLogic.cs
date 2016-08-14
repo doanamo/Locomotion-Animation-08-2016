@@ -8,8 +8,6 @@ public class CharacterLogic : MonoBehaviour
 
     public StateMachine stateMachine;
 
-    private float speed = 0.0f;
-
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
