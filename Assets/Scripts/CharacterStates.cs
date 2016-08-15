@@ -36,7 +36,7 @@ public class StandingState : State
     {
         // Stop character movement animation.
         float verticalSpeed = animator.GetFloat("Movement");
-        verticalSpeed = Mathf.MoveTowards(verticalSpeed, 0.0f, Time.fixedDeltaTime);
+        verticalSpeed = Mathf.MoveTowards(verticalSpeed, 0.0f, 2.0f * Time.fixedDeltaTime);
         animator.SetFloat("Movement", verticalSpeed);
 
         // Trigger a linger animation.
@@ -88,11 +88,11 @@ public class MovingState : State
         {
             // Set animation speed.
             float verticalSpeed = animator.GetFloat("Movement");
-            verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, Time.fixedDeltaTime);
+            verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
             animator.SetFloat("Movement", verticalSpeed);
 
             // Set rotation direction.
-            const float maxDegreesDelta = 240.0f;
+            const float maxDegreesDelta = 280.0f;
             Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime);
         }
