@@ -16,7 +16,7 @@ public class StandingState : State
 
     public override bool OnEnter(State previousState)
     {
-        lingerTimer = 0.0f;
+        lingerTimer = Random.Range(2.0f, 6.0f);
         return true;
     }
 
@@ -40,12 +40,12 @@ public class StandingState : State
         animator.SetFloat("Movement", verticalSpeed);
 
         // Trigger a linger animation.
-        lingerTimer += Time.fixedDeltaTime;
+        lingerTimer = Mathf.MoveTowards(lingerTimer, 0.0f, Time.fixedDeltaTime);
 
-        if(lingerTimer > 8.0f)
+        if(lingerTimer == 0.0f)
         {
             animator.SetTrigger("Linger");
-            lingerTimer = 0.0f;
+            lingerTimer = Random.Range(4.0f, 10.0f);
         }
     }
 }
@@ -92,7 +92,7 @@ public class MovingState : State
             animator.SetFloat("Movement", verticalSpeed);
 
             // Set rotation direction.
-            const float maxDegreesDelta = 180.0f;
+            const float maxDegreesDelta = 240.0f;
             Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime);
         }
