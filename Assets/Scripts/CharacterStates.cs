@@ -92,7 +92,9 @@ public class MovingState : State
             animator.SetFloat("Movement", verticalSpeed);
 
             // Set rotation direction.
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            const float maxDegreesDelta = 180.0f;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime);
         }
         else
         {

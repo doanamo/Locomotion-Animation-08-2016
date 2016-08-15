@@ -2107,11 +2107,11 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 4
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!95 &9537286
 Animator:
@@ -2153,8 +2153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ddab30a6d6fc6429ffa8ce56d44fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 0}
-  animator: {fileID: 0}
 --- !u!114 &11491000
 MonoBehaviour:
   m_ObjectHideFlags: 1

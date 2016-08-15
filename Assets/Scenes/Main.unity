@@ -124,6 +124,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5498922, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
+      propertyPath: m_AngularDrag
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
   m_IsPrefabParent: 0
@@ -507,8 +511,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pattern: 12
   patternScale: 1
-  activeSample: {x: 0.1875, y: -0.018518507, z: -0.3125, w: -0.35185185}
-  activeIndex: 12
+  activeSample: {x: -0.25, y: 0.16666669, z: 0, w: -0.16666666}
+  activeIndex: 1
 --- !u!114 &1829856958
 MonoBehaviour:
   m_ObjectHideFlags: 0
