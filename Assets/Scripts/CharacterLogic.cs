@@ -3,18 +3,18 @@ using System.Collections;
 
 public class CharacterLogic : MonoBehaviour
 {
-    [HideInInspector] public new Rigidbody rigidbody;
-    [HideInInspector] public Animator animator;
-
     public StateMachine stateMachine;
+
+    public IdleState idleState;
+    public MovingState movingState;
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        idleState = new IdleState(this);
+        movingState = new MovingState(this);
 
         stateMachine = new StateMachine();
-        stateMachine.ChangeState(new IdleState(this));
+        stateMachine.ChangeState(idleState);
     }
 
     public void HandleCommand<Type>(Type command)
