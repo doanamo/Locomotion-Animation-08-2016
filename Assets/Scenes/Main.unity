@@ -485,7 +485,7 @@ MonoBehaviour:
   unjitterColorSamples: 1
   unjitterNeighborhood: 0
   unjitterReprojection: 0
-  useYCoCg: 0
+  useYCoCg: 1
   useClipping: 1
   useDilation: 1
   useMotionBlur: 1
@@ -507,8 +507,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pattern: 12
   patternScale: 1
-  activeSample: {x: 0.25, y: -0.3888889, z: -0.25, w: 0.16666669}
-  activeIndex: 2
+  activeSample: {x: 0.1875, y: -0.018518507, z: -0.3125, w: -0.35185185}
+  activeIndex: 12
 --- !u!114 &1829856958
 MonoBehaviour:
   m_ObjectHideFlags: 0
