@@ -5,16 +5,16 @@ public class CharacterLogic : MonoBehaviour
 {
     public StateMachine stateMachine;
 
-    public IdleState idleState;
+    public StandingState standingState;
     public MovingState movingState;
 
     void Start()
     {
-        idleState = new IdleState(this);
+        standingState = new StandingState(this);
         movingState = new MovingState(this);
 
         stateMachine = new StateMachine();
-        stateMachine.ChangeState(idleState);
+        stateMachine.ChangeState(standingState);
     }
 
     public void HandleCommand<Type>(Type command)
@@ -24,6 +24,7 @@ public class CharacterLogic : MonoBehaviour
 
     void Update()
     {
+        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
     }
 
     void FixedUpdate()

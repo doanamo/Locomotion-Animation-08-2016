@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IdleState : State
+public class StandingState : State
 {
     private CharacterLogic character;
     private Animator animator;
 
     private float lingerTimer;
 
-    public IdleState(CharacterLogic character)
+    public StandingState(CharacterLogic character)
     {
         this.character = character;
-        this.animator = character.GetComponent<Animator>();
+        animator = character.GetComponent<Animator>();
     }
 
     public override bool OnEnter(State previousState)
@@ -53,14 +53,17 @@ public class IdleState : State
 public class MovingState : State
 {
     private CharacterLogic character;
+    private Transform transform;
     private Animator animator;
 
     private Vector3 direction;
+    private bool commandReceived;
 
     public MovingState(CharacterLogic character)
     {
         this.character = character;
-        this.animator = character.GetComponent<Animator>();
+        transform = character.GetComponent<Transform>();
+        animator = character.GetComponent<Animator>();
     }
 
     public override bool OnEnter(State previousState)
@@ -74,30 +77,30 @@ public class MovingState : State
         if(typeof(Type) == typeof(MoveCommand))
         {
             MoveCommand moveCommand = (MoveCommand)(object)command;
-            this.direction = moveCommand.direction;
+            direction = moveCommand.direction;
+            commandReceived = true;
         }
     }
 
     public override void OnUpdate()
     {
-        if(direction != Vector3.zero)
+        if(commandReceived)
         {
             // Set animation speed.
             float verticalSpeed = animator.GetFloat("Movement");
             verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, Time.fixedDeltaTime);
             animator.SetFloat("Movement", verticalSpeed);
 
-            // Rotate facing direction.
-            Transform transform = character.gameObject.transform;
+            // Set rotation direction.
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-
-            // Reset direction value.
-            direction = Vector3.zero;
         }
         else
         {
-            if(character.stateMachine.ChangeState(character.idleState))
+            if(character.stateMachine.ChangeState(character.standingState))
                 return;
         }
+
+        // Reset command received flag.
+        commandReceived = false;
     }
 }
