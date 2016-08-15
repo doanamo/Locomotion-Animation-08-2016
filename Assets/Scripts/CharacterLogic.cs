@@ -7,11 +7,13 @@ public class CharacterLogic : MonoBehaviour
 
     public StandingState standingState;
     public MovingState movingState;
+    public TurningState turningState;
 
     void Start()
     {
         standingState = new StandingState(this);
         movingState = new MovingState(this);
+        turningState = new TurningState(this);
 
         stateMachine = new StateMachine();
         stateMachine.ChangeState(standingState);

@@ -34,11 +34,6 @@ public class StandingState : State
 
     public override void OnUpdate()
     {
-        // Stop character movement animation.
-        float verticalSpeed = animator.GetFloat("Movement");
-        verticalSpeed = Mathf.MoveTowards(verticalSpeed, 0.0f, 2.0f * Time.fixedDeltaTime);
-        animator.SetFloat("Movement", verticalSpeed);
-
         // Trigger a linger animation.
         lingerTimer = Mathf.MoveTowards(lingerTimer, 0.0f, Time.fixedDeltaTime);
 
@@ -56,7 +51,7 @@ public class MovingState : State
     private Transform transform;
     private Animator animator;
 
-    private Vector3 direction;
+    private MoveCommand command;
     private bool commandReceived;
 
     public MovingState(CharacterLogic character)
@@ -66,19 +61,12 @@ public class MovingState : State
         animator = character.GetComponent<Animator>();
     }
 
-    public override bool OnEnter(State previousState)
-    {
-        direction = Vector3.zero;
-        return true;
-    }
-
     public override void HandleCommand<Type>(Type command)
     {
         if(typeof(Type) == typeof(MoveCommand))
         {
-            MoveCommand moveCommand = (MoveCommand)(object)command;
-            direction = moveCommand.direction;
-            commandReceived = true;
+            this.command = command as MoveCommand;
+            commandReceived = command != null;
         }
     }
 
@@ -86,23 +74,108 @@ public class MovingState : State
     {
         if(commandReceived)
         {
-            // Set animation speed.
-            float verticalSpeed = animator.GetFloat("Movement");
-            verticalSpeed = Mathf.MoveTowards(verticalSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
-            animator.SetFloat("Movement", verticalSpeed);
+            // Reset command received flag.
+            commandReceived = false;
+
+            // Hadnle turning the character around.
+            float angle = Vector3.Angle(transform.forward, command.direction);
+
+            if(angle >= 100.0f)
+            {
+                if(character.stateMachine.ChangeState(character.turningState))
+                    return;
+            }
 
             // Set rotation direction.
             const float maxDegreesDelta = 280.0f;
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(command.direction, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime);
+
+            // Increase movement animation speed.
+            float movementSpeed = animator.GetFloat("Movement");
+            movementSpeed = Mathf.MoveTowards(movementSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
+            animator.SetFloat("Movement", movementSpeed);
         }
         else
         {
-            if(character.stateMachine.ChangeState(character.standingState))
-                return;
-        }
+            // Descrease movement animation speed.
+            float movementSpeed = animator.GetFloat("Movement");
+            movementSpeed = Mathf.MoveTowards(movementSpeed, 0.0f, 2.0f * Time.fixedDeltaTime);
+            animator.SetFloat("Movement", movementSpeed);
 
-        // Reset command received flag.
-        commandReceived = false;
+            // Change state once movement speed is zero.
+            if(movementSpeed == 0.0f)
+            {
+                if(character.stateMachine.ChangeState(character.standingState))
+                    return;
+            }
+        }
+    }
+}
+
+public class TurningState : State
+{
+    State previousState;
+
+    private CharacterLogic character;
+    private Transform transform;
+    private Animator animator;
+
+    MoveCommand cachedCommand;
+    bool animationStarted;
+
+    public TurningState(CharacterLogic character)
+    {
+        this.character = character;
+        transform = character.GetComponent<Transform>(); ;
+        animator = character.GetComponent<Animator>();
+    }
+
+    public override bool OnEnter(State previousState)
+    {
+        this.previousState = previousState;
+
+        cachedCommand = null;
+
+        animator.SetTrigger("Turn");
+        animationStarted = false;
+
+        return true;
+    }
+
+    public override void HandleCommand<Type>(Type command)
+    {
+        if(typeof(Type) == typeof(MoveCommand))
+        {
+            cachedCommand = command as MoveCommand;
+        }
+    }
+
+    public override void OnUpdate()
+    {
+        if(!animationStarted)
+        {
+            // Check if the animation started playing.
+            if(animator.GetCurrentAnimatorStateInfo(0).IsName("Turn"))
+            {
+                animationStarted = true;
+
+                // Make the turning animation always end with a constant movement speed.
+                float movementSpeed = animator.GetFloat("Movement");
+                animator.SetFloat("Movement", Mathf.Max(0.0f, 0.6f));
+            }
+        }
+        else
+        {
+            // Check if the turning animation is about to transist out.
+            if(animator.IsInTransition(0))
+            {
+                if(character.stateMachine.ChangeState(previousState))
+                {
+                    previousState.HandleCommand(cachedCommand);
+                    return;
+                }
+            }
+        }
     }
 }
