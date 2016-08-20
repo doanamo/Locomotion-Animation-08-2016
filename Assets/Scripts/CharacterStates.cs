@@ -49,6 +49,7 @@ public class MovingState : State
 {
     private CharacterLogic character;
     private Transform transform;
+    private Rigidbody rigidbody;
     private Animator animator;
 
     private MoveCommand command;
@@ -58,6 +59,7 @@ public class MovingState : State
     {
         this.character = character;
         transform = character.GetComponent<Transform>();
+        rigidbody = character.GetComponent<Rigidbody>();
         animator = character.GetComponent<Animator>();
     }
 
@@ -89,7 +91,7 @@ public class MovingState : State
             // Set rotation direction.
             const float maxDegreesDelta = 280.0f;
             Quaternion targetRotation = Quaternion.LookRotation(command.direction, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime);
+            rigidbody.MoveRotation(Quaternion.RotateTowards(rigidbody.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime));
 
             // Increase movement animation speed.
             float movementSpeed = animator.GetFloat("Movement");
