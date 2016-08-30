@@ -1,6 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
 
-[System.Serializable]
 public class ControllerPID
 {
     public float pFactor;

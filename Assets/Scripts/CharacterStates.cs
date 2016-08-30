@@ -45,7 +45,6 @@ public class StandingState : State
     }
 }
 
-[System.Serializable]
 public class MovingState : State
 {
     private CharacterLogic character;
@@ -53,7 +52,7 @@ public class MovingState : State
     private Rigidbody rigidbody;
     private Animator animator;
 
-    public MoveCommand command;
+    private MoveCommand command;
     private bool commandReceived;
 
     public ControllerPID headingAngleController;
