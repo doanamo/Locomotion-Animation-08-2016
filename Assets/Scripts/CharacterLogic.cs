@@ -26,7 +26,6 @@ public class CharacterLogic : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
     }
 
     void FixedUpdate()

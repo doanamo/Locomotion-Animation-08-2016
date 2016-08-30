@@ -2124,7 +2124,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 4c70bb2e88722cb4d84d49afd75ee2c0, type: 3}
   m_Controller: {fileID: 9100000, guid: d572a9db8a1e59749b214610a080bc4b, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -2153,6 +2153,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ddab30a6d6fc6429ffa8ce56d44fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angleController:
+    pFactor: 1
+    iFactor: 0
+    dFactor: 0
+  angularVelocityController:
+    pFactor: 3
+    iFactor: 0
+    dFactor: 0.01
 --- !u!114 &11491000
 MonoBehaviour:
   m_ObjectHideFlags: 1

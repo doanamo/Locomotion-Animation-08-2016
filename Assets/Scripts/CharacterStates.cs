@@ -45,6 +45,7 @@ public class StandingState : State
     }
 }
 
+[System.Serializable]
 public class MovingState : State
 {
     private CharacterLogic character;
@@ -52,8 +53,11 @@ public class MovingState : State
     private Rigidbody rigidbody;
     private Animator animator;
 
-    private MoveCommand command;
+    public MoveCommand command;
     private bool commandReceived;
+
+    public ControllerPID headingAngleController;
+    public ControllerPID angularVelocityController;
 
     public MovingState(CharacterLogic character)
     {
@@ -61,6 +65,9 @@ public class MovingState : State
         transform = character.GetComponent<Transform>();
         rigidbody = character.GetComponent<Rigidbody>();
         animator = character.GetComponent<Animator>();
+
+        headingAngleController = new ControllerPID();
+        angularVelocityController = new ControllerPID();
     }
 
     public override void HandleCommand<Type>(Type command)
@@ -88,11 +95,6 @@ public class MovingState : State
                     return;
             }
 
-            // Set rotation direction.
-            const float maxDegreesDelta = 280.0f;
-            Quaternion targetRotation = Quaternion.LookRotation(command.direction, Vector3.up);
-            rigidbody.MoveRotation(Quaternion.RotateTowards(rigidbody.rotation, targetRotation, maxDegreesDelta * Time.fixedDeltaTime));
-
             // Increase movement animation speed.
             float movementSpeed = animator.GetFloat("Movement");
             movementSpeed = Mathf.MoveTowards(movementSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
@@ -106,12 +108,22 @@ public class MovingState : State
             animator.SetFloat("Movement", movementSpeed);
 
             // Change state once movement speed is zero.
-            if(movementSpeed == 0.0f)
+            if(movementSpeed == 0.0f && rigidbody.angularVelocity.magnitude <= 0.1f)
             {
                 if(character.stateMachine.ChangeState(character.standingState))
                     return;
             }
         }
+
+        // Rotate the character using physics forces regulated by two PID controllers.
+        float targetAngle = Utility.AngleSigned(Vector3.forward, command.direction, Vector3.up);
+        float angleError = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+        float torqueAngleCorrection = headingAngleController.Update(angleError, Time.fixedDeltaTime);
+
+        float angularVelocityError = -rigidbody.angularVelocity.y;
+        float torqueAngularVelocityCorrection = angularVelocityController.Update(angularVelocityError, Time.fixedDeltaTime);
+
+        rigidbody.AddTorque(transform.up * (torqueAngleCorrection + torqueAngularVelocityCorrection));
     }
 }
 
@@ -120,7 +132,6 @@ public class TurningState : State
     State previousState;
 
     private CharacterLogic character;
-    private Transform transform;
     private Animator animator;
 
     MoveCommand cachedCommand;
@@ -129,7 +140,6 @@ public class TurningState : State
     public TurningState(CharacterLogic character)
     {
         this.character = character;
-        transform = character.GetComponent<Transform>(); ;
         animator = character.GetComponent<Animator>();
     }
 
@@ -163,8 +173,7 @@ public class TurningState : State
                 animationStarted = true;
 
                 // Make the turning animation always end with a constant movement speed.
-                float movementSpeed = animator.GetFloat("Movement");
-                animator.SetFloat("Movement", Mathf.Max(0.0f, 0.6f));
+                animator.SetFloat("Movement", 0.6f);
             }
         }
         else

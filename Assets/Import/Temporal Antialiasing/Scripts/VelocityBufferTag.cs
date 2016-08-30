@@ -6,120 +6,127 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[AddComponentMenu("Playdead/VelocityBufferTag")]
-public class VelocityBufferTag : MonoBehaviour
+namespace TemporalAntialasing
 {
-    public static List<VelocityBufferTag> activeObjects = new List<VelocityBufferTag>(128);
-
-    [NonSerialized, HideInInspector] public Mesh mesh;
-    [NonSerialized, HideInInspector] public Matrix4x4 localToWorldPrev;
-    [NonSerialized, HideInInspector] public Matrix4x4 localToWorldCurr;
-
-    private SkinnedMeshRenderer skinnedMesh = null;
-    public bool useSkinnedMesh = false;
-
-    public const int framesNotRenderedThreshold = 60;
-    private int framesNotRendered = framesNotRenderedThreshold;
-
-    [NonSerialized] public bool sleeping = false;
-
-    void Start()
+    [AddComponentMenu("Playdead/VelocityBufferTag")]
+    public class VelocityBufferTag : MonoBehaviour
     {
-        if (useSkinnedMesh)
-        {
-            var smr = this.GetComponent<SkinnedMeshRenderer>();
-            if (smr != null)
-            {
-                mesh = new Mesh();
-                skinnedMesh = smr;
-                skinnedMesh.BakeMesh(mesh);
-            }
-        }
-        else
-        {
-            var mf = this.GetComponent<MeshFilter>();
-            if (mf != null)
-            {
-                mesh = mf.sharedMesh;
-            }
-        }
+        public static List<VelocityBufferTag> activeObjects = new List<VelocityBufferTag>(128);
 
-        localToWorldCurr = transform.localToWorldMatrix;
-        localToWorldPrev = localToWorldCurr;
-    }
+        [NonSerialized, HideInInspector]
+        public Mesh mesh;
+        [NonSerialized, HideInInspector]
+        public Matrix4x4 localToWorldPrev;
+        [NonSerialized, HideInInspector]
+        public Matrix4x4 localToWorldCurr;
 
-    void VelocityUpdate()
-    {
-        if (useSkinnedMesh)
+        private SkinnedMeshRenderer skinnedMesh = null;
+        public bool useSkinnedMesh = false;
+
+        public const int framesNotRenderedThreshold = 60;
+        private int framesNotRendered = framesNotRenderedThreshold;
+
+        [NonSerialized]
+        public bool sleeping = false;
+
+        void Start()
         {
-            if (skinnedMesh == null)
+            if(useSkinnedMesh)
             {
-                Debug.LogWarning("vbuf skinnedMesh not set", this);
-                return;
-            }
-
-            if (sleeping)
-            {
-                skinnedMesh.BakeMesh(mesh);
-                mesh.normals = mesh.vertices;// garbage ahoy
+                var smr = this.GetComponent<SkinnedMeshRenderer>();
+                if(smr != null)
+                {
+                    mesh = new Mesh();
+                    skinnedMesh = smr;
+                    skinnedMesh.BakeMesh(mesh);
+                }
             }
             else
             {
-                Vector3[] vs = mesh.vertices;// garbage ahoy
-                skinnedMesh.BakeMesh(mesh);
-                mesh.normals = vs;
+                var mf = this.GetComponent<MeshFilter>();
+                if(mf != null)
+                {
+                    mesh = mf.sharedMesh;
+                }
             }
-        }
 
-        if (sleeping)
-        {
             localToWorldCurr = transform.localToWorldMatrix;
             localToWorldPrev = localToWorldCurr;
         }
-        else
+
+        void VelocityUpdate()
         {
-            localToWorldPrev = localToWorldCurr;
-            localToWorldCurr = transform.localToWorldMatrix;
+            if(useSkinnedMesh)
+            {
+                if(skinnedMesh == null)
+                {
+                    Debug.LogWarning("vbuf skinnedMesh not set", this);
+                    return;
+                }
+
+                if(sleeping)
+                {
+                    skinnedMesh.BakeMesh(mesh);
+                    mesh.normals = mesh.vertices;// garbage ahoy
+                }
+                else
+                {
+                    Vector3[] vs = mesh.vertices;// garbage ahoy
+                    skinnedMesh.BakeMesh(mesh);
+                    mesh.normals = vs;
+                }
+            }
+
+            if(sleeping)
+            {
+                localToWorldCurr = transform.localToWorldMatrix;
+                localToWorldPrev = localToWorldCurr;
+            }
+            else
+            {
+                localToWorldPrev = localToWorldCurr;
+                localToWorldCurr = transform.localToWorldMatrix;
+            }
+
+            sleeping = false;
         }
 
-        sleeping = false;
-    }
-
-    void LateUpdate()
-    {
-        if (framesNotRendered < framesNotRenderedThreshold)
+        void LateUpdate()
         {
-            framesNotRendered++;
-        }
-        else
-        {
-            sleeping = true;// sleep until next OnWillRenderObject
-            return;
-        }
+            if(framesNotRendered < framesNotRenderedThreshold)
+            {
+                framesNotRendered++;
+            }
+            else
+            {
+                sleeping = true;// sleep until next OnWillRenderObject
+                return;
+            }
 
-        VelocityUpdate();
-    }
-
-    void OnWillRenderObject()
-    {
-        if (Camera.current != Camera.main)
-            return;// ignore anything but main cam
-
-        if (sleeping)
-        {
             VelocityUpdate();
         }
 
-        framesNotRendered = 0;
-    }
+        void OnWillRenderObject()
+        {
+            if(Camera.current != Camera.main)
+                return;// ignore anything but main cam
 
-    void OnEnable()
-    {
-        activeObjects.Add(this);
-    }
+            if(sleeping)
+            {
+                VelocityUpdate();
+            }
 
-    void OnDisable()
-    {
-        activeObjects.Remove(this);
+            framesNotRendered = 0;
+        }
+
+        void OnEnable()
+        {
+            activeObjects.Add(this);
+        }
+
+        void OnDisable()
+        {
+            activeObjects.Remove(this);
+        }
     }
 }
