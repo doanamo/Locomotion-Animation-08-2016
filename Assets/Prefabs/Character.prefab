@@ -609,7 +609,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 453966}
   - 137: {fileID: 13796506}
-  - 114: {fileID: 11491000}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -735,7 +734,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 401734}
   - 137: {fileID: 13754314}
-  - 114: {fileID: 11418368}
   m_Layer: 0
   m_Name: Joints
   m_TagString: Untagged
@@ -2127,18 +2125,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11418368
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 173818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc21c48ee370cb42a042622dd21640d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useSkinnedMesh: 1
 --- !u!114 &11477202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2150,18 +2136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ddab30a6d6fc6429ffa8ce56d44fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11491000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc21c48ee370cb42a042622dd21640d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useSkinnedMesh: 1
+  stateMachine: {fileID: 0}
+  standingState: {fileID: 0}
+  movingState: {fileID: 0}
+  turningState: {fileID: 0}
 --- !u!136 &13697172
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2184,17 +2162,20 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: c996aadddc7a18144963ae3d76149c06, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2204,6 +2185,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300002, guid: 4c70bb2e88722cb4d84d49afd75ee2c0, type: 3}
   m_Bones:
   - {fileID: 405318}
@@ -2273,17 +2255,20 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 9ecd9ef03ee7b854ca8efcc8b90f75f3, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2293,6 +2278,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300000, guid: 4c70bb2e88722cb4d84d49afd75ee2c0, type: 3}
   m_Bones:
   - {fileID: 405318}

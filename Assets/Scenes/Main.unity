@@ -162,22 +162,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 466340, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0.53662694
-      objectReference: {fileID: 0}
-    - target: {fileID: 466340, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0.516109
-      objectReference: {fileID: 0}
-    - target: {fileID: 466340, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0.5145409
-      objectReference: {fileID: 0}
-    - target: {fileID: 466340, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.42533585
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60f085f54b6baf14180ba10b28da9480, type: 2}
   m_IsPrefabParent: 0
@@ -225,7 +209,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4f4df4b7867eddb47af916f70924d2cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -441,7 +425,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4f4df4b7867eddb47af916f70924d2cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -488,10 +472,10 @@ GameObject:
   - 92: {fileID: 1829856953}
   - 124: {fileID: 1829856952}
   - 81: {fileID: 1829856951}
-  - 114: {fileID: 1829856958}
+  - 114: {fileID: 1829856959}
   - 114: {fileID: 1829856957}
   - 114: {fileID: 1829856956}
-  - 114: {fileID: 1829856959}
+  - 114: {fileID: 1829856958}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -549,7 +533,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
+  m_HDR: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -575,23 +559,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1829856950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65f5677aa325c184f801528d78a73827, type: 3}
+  m_Script: {fileID: 11500000, guid: f0004801f1c164bd6bf9b71350f04c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reprojectionShader: {fileID: 4800000, guid: 7ca93c1a56ee0154b8c714591d6d211a, type: 3}
-  neighborhood: 1
-  unjitterColorSamples: 1
-  unjitterNeighborhood: 0
-  unjitterReprojection: 0
-  useYCoCg: 1
-  useClipping: 1
-  useDilation: 1
-  useMotionBlur: 1
-  useOptimizations: 1
-  feedbackMin: 0.88
-  feedbackMax: 0.97
-  motionBlurStrength: 1
-  motionBlurIgnoreFF: 0
+  settings:
+    jitterSettings:
+      sequence: 0
+      spread: 1
+      sampleCount: 8
+    sharpenFilterSettings:
+      amount: 0.25
+    blendSettings:
+      stationary: 0.98
+      moving: 0.8
+      motionAmplification: 60
+    debugSettings:
+      forceRepaint: 0
 --- !u!114 &1829856957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,13 +583,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1829856950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899f97884c6d96b4ca20648ec109a37f, type: 3}
+  m_Script: {fileID: 11500000, guid: e89654dcf6db746d2a57aeaaa14f5e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pattern: 12
-  patternScale: 1
-  activeSample: {x: -0.25, y: 0.16666669, z: 0, w: -0.16666666}
-  activeIndex: 1
+  settings:
+    intensity: 0.1
+    radius: 0.4
+    sampleCount: 2
+    sampleCountValue: 24
+    downsampling: 1
+    ambientOnly: 0
+    occlusionSource: 1
+    debug: 0
+  _aoShader: {fileID: 4800000, guid: 65e203e5acda447acbf9dc1ef78c4a39, type: 3}
+  _quadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1829856958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,15 +605,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1829856950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b642ff60407fe724bafa6602199213c0, type: 3}
+  m_Script: {fileID: 11500000, guid: ff5335a7357baa3489a469d0ca0f40f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocityShader: {fileID: 4800000, guid: 0d7f09e63dd99504ca6e04212a21ec72, type: 3}
-  neighborMaxGen: 0
-  neighborMaxSupport: 1
-  numResident: 0
-  numRendered: 0
-  numDrawCalls: 0
+  distortion:
+    enabled: 0
+    amount: 0
+    centerX: 0
+    centerY: 0
+    amountX: 1
+    amountY: 1
+    scale: 1
+  vignette:
+    enabled: 1
+    color: {r: 0, g: 0, b: 0, a: 1}
+    center: {x: 0.5, y: 0.5}
+    intensity: 1.4
+    smoothness: 1
+    roundness: 0.7
+    blur: 0
+    desaturate: 0
+  chromaticAberration:
+    enabled: 0
+    color: {r: 0, g: 1, b: 0, a: 1}
+    amount: 1
+  m_Shader: {fileID: 4800000, guid: 136ab50fe2b9ad64d9c22adc3668abb7, type: 3}
 --- !u!114 &1829856959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -688,7 +694,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4f4df4b7867eddb47af916f70924d2cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -808,7 +814,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4f4df4b7867eddb47af916f70924d2cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -887,7 +893,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4f4df4b7867eddb47af916f70924d2cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
