@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
+#pragma warning disable CS0649
+
 namespace UnityStandardAssets.CinematicEffects
 {
     [ExecuteInEditMode]

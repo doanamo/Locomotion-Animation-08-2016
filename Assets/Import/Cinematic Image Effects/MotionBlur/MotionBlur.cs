@@ -2,6 +2,8 @@
 
 using UnityEngine;
 
+#pragma warning disable CS0169
+
 namespace UnityStandardAssets.CinematicEffects
 {
     [RequireComponent(typeof(Camera))]

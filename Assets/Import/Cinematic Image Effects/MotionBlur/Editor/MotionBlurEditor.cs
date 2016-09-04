@@ -9,6 +9,8 @@
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable CS0649
+
 namespace UnityStandardAssets.CinematicEffects
 {
     [CanEditMultipleObjects]
