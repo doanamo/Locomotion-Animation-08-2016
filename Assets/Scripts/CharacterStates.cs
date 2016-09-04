@@ -6,9 +6,17 @@ public class StandingState : State
     private CharacterLogic character;
     private Animator animator;
 
+    [SerializeField]
     private float lingerTimer;
 
-    public StandingState(CharacterLogic character)
+    public static StandingState CreateInstance(CharacterLogic character)
+    {
+        var instance = ScriptableObject.CreateInstance<StandingState>();
+        instance.Initialize(character);
+        return instance;
+    }
+
+    public void Initialize(CharacterLogic character)
     {
         this.character = character;
         animator = character.GetComponent<Animator>();
@@ -22,6 +30,7 @@ public class StandingState : State
 
     public override void HandleCommand<Type>(Type command)
     {
+        // Handle movement command.
         if(typeof(Type) == typeof(MoveCommand))
         {
             if(character.stateMachine.ChangeState(character.movingState))
@@ -52,21 +61,31 @@ public class MovingState : State
     private Rigidbody rigidbody;
     private Animator animator;
 
+    [SerializeField]
     private MoveCommand command;
+
+    [SerializeField]
     private bool commandReceived;
 
     public ControllerPID headingAngleController;
     public ControllerPID angularVelocityController;
 
-    public MovingState(CharacterLogic character)
+    public static MovingState CreateInstance(CharacterLogic character)
+    {
+        var instance = ScriptableObject.CreateInstance<MovingState>();
+        instance.Initialize(character);
+        return instance;
+    }
+
+    public void Initialize(CharacterLogic character)
     {
         this.character = character;
         transform = character.GetComponent<Transform>();
         rigidbody = character.GetComponent<Rigidbody>();
         animator = character.GetComponent<Animator>();
 
-        headingAngleController = new ControllerPID();
-        angularVelocityController = new ControllerPID();
+        headingAngleController = ControllerPID.CreateInstance();
+        angularVelocityController = ControllerPID.CreateInstance();
     }
 
     public override void HandleCommand<Type>(Type command)
@@ -117,10 +136,10 @@ public class MovingState : State
         // Rotate the character using physics forces regulated by two PID controllers.
         float targetAngle = Utility.AngleSigned(Vector3.forward, command.direction, Vector3.up);
         float angleError = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-        float torqueAngleCorrection = headingAngleController.Update(angleError, Time.fixedDeltaTime);
+        float torqueAngleCorrection = headingAngleController.Calculate(angleError, Time.fixedDeltaTime);
 
         float angularVelocityError = -rigidbody.angularVelocity.y;
-        float torqueAngularVelocityCorrection = angularVelocityController.Update(angularVelocityError, Time.fixedDeltaTime);
+        float torqueAngularVelocityCorrection = angularVelocityController.Calculate(angularVelocityError, Time.fixedDeltaTime);
 
         rigidbody.AddTorque(transform.up * (torqueAngleCorrection + torqueAngularVelocityCorrection));
     }
@@ -128,15 +147,26 @@ public class MovingState : State
 
 public class TurningState : State
 {
-    State previousState;
-
     private CharacterLogic character;
     private Animator animator;
 
-    MoveCommand cachedCommand;
-    bool animationStarted;
+    [SerializeField]
+    private State previousState;
 
-    public TurningState(CharacterLogic character)
+    [SerializeField]
+    private MoveCommand cachedCommand;
+
+    [SerializeField]
+    private bool animationStarted;
+
+    public static TurningState CreateInstance(CharacterLogic character)
+    {
+        var instance = ScriptableObject.CreateInstance<TurningState>();
+        instance.Initialize(character);
+        return instance;
+    }
+
+    public void Initialize(CharacterLogic character)
     {
         this.character = character;
         animator = character.GetComponent<Animator>();

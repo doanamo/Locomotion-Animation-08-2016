@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 
-public abstract class State
+public abstract class State: ScriptableObject
 {
     public virtual bool OnEnter(State previousState)
     {
@@ -21,11 +22,23 @@ public abstract class State
     }
 }
 
-public class StateMachine
+public class StateMachine : ScriptableObject
 {
     public State currentState
     {
         get; private set;
+    }
+
+    public static StateMachine CreateInstance()
+    {
+        var instance = ScriptableObject.CreateInstance<StateMachine>();
+        instance.Initialize();
+        return instance;
+    }
+
+    public void Initialize()
+    {
+        currentState = null;
     }
 
     public bool ChangeState(State state)

@@ -11,11 +11,11 @@ public class CharacterLogic : MonoBehaviour
 
     void Start()
     {
-        standingState = new StandingState(this);
-        movingState = new MovingState(this);
-        turningState = new TurningState(this);
+        standingState = StandingState.CreateInstance(this);
+        movingState = MovingState.CreateInstance(this);
+        turningState = TurningState.CreateInstance(this);
 
-        stateMachine = new StateMachine();
+        stateMachine = ScriptableObject.CreateInstance<StateMachine>();
         stateMachine.ChangeState(standingState);
     }
 
