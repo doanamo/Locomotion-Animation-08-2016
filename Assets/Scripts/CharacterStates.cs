@@ -104,6 +104,11 @@ public class MovingState : State
             // Reset command received flag.
             commandReceived = false;
 
+            // Increase movement animation speed.
+            float movementSpeed = animator.GetFloat("Movement");
+            movementSpeed = Mathf.MoveTowards(movementSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
+            animator.SetFloat("Movement", movementSpeed);
+
             // Hadnle turning the character around.
             float angle = Vector3.Angle(transform.forward, command.direction);
 
@@ -112,11 +117,6 @@ public class MovingState : State
                 if(character.stateMachine.ChangeState(character.turningState))
                     return;
             }
-
-            // Increase movement animation speed.
-            float movementSpeed = animator.GetFloat("Movement");
-            movementSpeed = Mathf.MoveTowards(movementSpeed, 1.0f, 2.0f * Time.fixedDeltaTime);
-            animator.SetFloat("Movement", movementSpeed);
         }
         else
         {

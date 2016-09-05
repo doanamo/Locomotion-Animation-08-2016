@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
         if(direction != Vector3.zero)
         {
-            character.HandleCommand(new MoveCommand(direction));
+            character.HandleCommand(MoveCommand.CreateInstance(direction));
         }
     }
 }
