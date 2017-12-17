@@ -1,7 +1,6 @@
 Locomation Animation
 ====
-Character locomotion animation demo made in Unity 5 using Mixamo assets.  
-Utilizes PID controllers to control character rotation using physic forces.
+Character locomotion animation demo made in Unity 5 using free Mixamo animation assets. Utilizes PID controllers to control the character's rotation with physical forces.
 
 ![](Docs/Demo.gif)
 
